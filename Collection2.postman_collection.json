@@ -1,0 +1,207 @@
+{
+	"info": {
+		"_postman_id": "06309c16-6641-4085-bcc0-3005c1573f6f",
+		"name": "Collection2",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "47094481",
+		"_collection_link": "https://sunilthakur-ece-3405265.postman.co/workspace/861ba317-da8f-4fe9-8797-ad450a1486fa/collection/47094481-06309c16-6641-4085-bcc0-3005c1573f6f?action=share&source=collection_link&creator=47094481"
+	},
+	"item": [
+		{
+			"name": "Auth Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();\r",
+							"pm.environment.set('Token',res.data.access_token);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"client_id\": \"{{client_id}}\",\r\n    \"client_secret\": \"{{client_secret}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{Auth}}",
+					"host": [
+						"{{Auth}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Order",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res=pm.response.json();\r",
+							"pm.environment.set('Creation_date',res.data.created_at);"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "quantity",
+							"value": "6",
+							"type": "text"
+						},
+						{
+							"key": "package_id",
+							"value": "merhaba-7days-1gb",
+							"type": "text"
+						},
+						{
+							"key": "type",
+							"value": "sim",
+							"type": "text"
+						},
+						{
+							"key": "description",
+							"value": "order_Sunil_{{$timestamp}}",
+							"type": "text"
+						},
+						{
+							"key": "brand_settings_name",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{Orders_end_point}}",
+					"host": [
+						"{{Orders_end_point}}"
+					]
+				},
+				"description": "Generated from cURL: curl --location 'https://partners-api.airalo.com/v2/orders' \\\r\n--header 'Accept: application/json' \\\r\n--header 'Authorization: Bearer {ACCESS_TOKEN}' \\\r\n--form 'quantity=\"1\"' \\\r\n--form 'package_id=\"kallur-digital-7days-1gb\"' \\\r\n--form 'type=\"sim\"' \\\r\n--form 'description=\"Example description to identify the order\"' \\\r\n--form 'brand_settings_name=\"our perfect brand\"'"
+			},
+			"response": []
+		},
+		{
+			"name": "Get a list of SIM",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{Token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer {{Token}}"
+					}
+				],
+				"url": {
+					"raw": "https://sandbox-partners-api.airalo.com/v2/sims?include=order&filter[created_at]={{Creation_date}} - {{Creation_date}}",
+					"protocol": "https",
+					"host": [
+						"sandbox-partners-api",
+						"airalo",
+						"com"
+					],
+					"path": [
+						"v2",
+						"sims"
+					],
+					"query": [
+						{
+							"key": "include",
+							"value": "order"
+						},
+						{
+							"key": "limit",
+							"value": "6",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "filter[created_at]",
+							"value": "{{Creation_date}} - {{Creation_date}}"
+						}
+					]
+				},
+				"description": "Generated from cURL: curl --location 'https://sandbox-partners-api.airalo.com/v2/sims?include=order%2Corder.status%2Corder.user%2Cshare&limit=asdsad&page=1' \\\r\n--header 'Accept: application/json' \\\r\n--header 'Authorization: Bearer {ACCESS_TOKEN}'"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
